@@ -1,0 +1,184 @@
+<div class="product-container">
+  <div class="product-card">
+    <!-- Product Image Section -->
+    <div class="product-image">
+      <img 
+        src="/product-images/{{product._id}}.jpg" 
+        alt="{{product.name}}" 
+        onerror="this.onerror=null;this.src='/product-images/placeholder.jpg';"
+        class="product-img" 
+      />
+    </div>
+
+    <!-- Product Info Section -->
+    <div class="product-info">
+      <h2 class="product-name">{{product.name}}</h2>
+      <p class="product-category">Category: <span>{{product.category}}</span></p>
+      
+      <h4 class="product-price" style="color: {{#if product.isActive}}#28a745{{else}}#dc3545{{/if}};">
+        ₹ {{product.price}}
+      </h4>
+
+      <p class="product-description">{{product.description}}</p>
+
+      <!-- Action Buttons -->
+      {{#if product.isActive}}
+  <div class="button-group">
+    {{!-- <form action="/addtocart" method="POST" style="display: inline;">
+      <input type="hidden" name="productId" value="{{product._id}}">
+      <input type="hidden" name="productName" value="{{product.name}}">
+      <input type="hidden" name="userId" value="{{user._id}}">
+      <button type="submit" class="btn add-to-cart">🛒 Add to Cart</button>
+    </form> --}}
+
+    {{#if product.stock}}
+      <a href="/buy/{{product._id}}">
+        <button type="button" class="btn buy-now">⚡ Buy Now</button>
+      </a>
+    {{/if}}
+    
+  </div>
+{{else}}
+  <p class="out-of-stock">❌ Out of Stock</p>
+{{/if}}
+
+
+      <!-- Extra Details -->
+      {{#if product.extra}}
+        <div class="extra-info">
+          <h4>Additional Details:</h4>
+          <ul>
+            {{#each product.extra}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Modern Layout */
+  .product-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    background: linear-gradient(to right, #f1f8e9, #e8f5e9); /* Light green gradient */
+  }
+
+  .product-card {
+    display: flex;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 70%;
+    max-width: 900px;
+  }
+
+  .product-image {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 20px;
+  }
+
+  .product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .product-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .product-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  .product-category {
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+
+  .product-price {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .product-description {
+    font-size: 16px;
+    color: #34495e;
+  }
+
+  /* Buttons */
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .add-to-cart, .buy-now {
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+
+  .add-to-cart {
+    background: #ffcc00;
+    color: #333;
+  }
+
+  .add-to-cart:hover {
+    background: #e6b800;
+  }
+
+  .buy-now {
+    background: #ff5722;
+    color: #fff;
+  }
+
+  .buy-now:hover {
+    background: #e64a19;
+  }
+
+  .out-of-stock {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+
+  /* Extra Details */
+  .extra-info {
+    margin-top: 20px;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .extra-info h4 {
+    font-size: 18px;
+    color: #2c3e50;
+  }
+
+  .extra-info ul {
+    padding-left: 20px;
+  }
+
+  .extra-info li {
+    font-size: 14px;
+    color: #555;
+  }
+</style>

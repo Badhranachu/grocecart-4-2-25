@@ -1,0 +1,99 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <a class="navbar-brand" href="#">Grocecart</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <!-- Right-side Navigation -->
+      <ul class="navbar-nav ml-auto"> <!-- Added ml-auto to push it to the right -->
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Products <span class="sr-only">(current)</span></a>
+        </li>
+        {{#if user}}
+        <li class="nav-item">
+          <a class="nav-link" href="/orders">Orders</a>
+        </li>
+        {{/if}}
+      </ul>
+
+      <!-- Right-side Account Dropdown -->
+      <div class="btn-group">
+        <div
+          class="dropdown-toggle d-flex align-items-center justify-content-center no-arrow"
+          id="userDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{#if user}} 
+            <img src="{{user.imagePath}}" alt="Profile Picture" class="profile-picture">
+          {{else}}
+            <div class="default-avatar">4045</div>
+          {{/if}}
+        </div>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          {{#if user}}
+            <a class="dropdown-item" href="/profile">View Profile</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          {{else}}
+            <a class="dropdown-item" href="/login">Login</a>
+            <a class="dropdown-item" href="/signup">Signup</a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .navbar {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding-right: 1.2rem;
+    color: white !important;
+  }
+
+  .profile-picture,
+  .default-avatar {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-picture {
+    object-fit: cover;
+    background-color: white;
+  }
+
+  .default-avatar {
+    background-color: #ffc107;
+    color: black;
+    font-size: 18px;
+  }
+
+  #userDropdown {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+  }
+</style>

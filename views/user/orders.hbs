@@ -1,0 +1,105 @@
+<div class="container mt-5">
+  <h1 class="text-center text-primary mb-5 fw-bold">📦 Your Orders</h1>
+
+  {{#if orders.length}}
+  <div class="row">
+    {{#each orders}}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-lg rounded-lg border-light overflow-hidden">
+        <!-- Product Image (Opens Modal) -->
+        <img src="{{productImage}}" alt="{{productName}}" class="card-img-top img-thumbnail img-hover" style="height: 250px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal{{@index}}">
+
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{productName}}</h5>
+          <p class="card-text"><strong>💰 Price:</strong> ₹{{totalPrice}}</p>
+          <p class="card-text"><strong>🔢 Quantity:</strong> {{quantity}}</p>
+          <p class="card-text"><strong>💳 Payment:</strong> {{paymentMethod}}</p>
+          <p class="card-text"><strong>📅 Ordered On:</strong> {{orderDateFormatted}}</p>
+          <p class="card-text"><strong>📦 Status:</strong> <span class="status-badge">{{orderStatus}}</span></p>
+        </div>
+
+        <div class="card-footer text-center">
+          <a href="/each-product/{{productId}}" class="btn btn-primary btn-sm rounded-pill px-4 py-2 shadow-sm">
+            🔍 View Details
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal{{@index}}" tabindex="-1" aria-labelledby="imageModalLabel{{@index}}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img src="{{productImage}}" alt="{{productName}}" class="img-fluid w-100 rounded shadow">
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{else}}
+  <p class="text-center text-muted fs-4">😔 No confirmed orders found.</p>
+  {{/if}}
+</div>
+
+<style>
+  /* Ensure the card text remains styled properly */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Card hover effect */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Image hover effect */
+  .img-hover:hover {
+    opacity: 0.8;
+  }
+
+  /* Card footer styling */
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+
+  /* Status Badge */
+  .status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  /* Status Colors */
+  .status-badge:contains('Pending') { background-color: #ffc107; color: #212529; }
+  .status-badge:contains('Shipped') { background-color: #17a2b8; color: white; }
+  .status-badge:contains('Delivered') { background-color: #28a745; color: white; }
+  .status-badge:contains('Cancelled') { background-color: #dc3545; color: white; }
+
+  /* Responsive container */
+  .container {
+    max-width: 1200px;
+  }
+
+  /* Modal Styling */
+  .modal-content {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+  }
+
+  .modal-body img {
+    max-height: 80vh;
+    object-fit: contain;
+  }
+</style>

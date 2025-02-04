@@ -1,0 +1,109 @@
+<div class="container mt-5">
+  <!-- Page Heading -->
+  <h2 class="text-center mb-4 text-primary fw-bold">✅ Confirm Your Order & Payment</h2>
+
+  {{#if isMultiple}}
+    <!-- Multiple Products in Cart -->
+    <div class="card mb-5 p-4 shadow-lg border-0 rounded-3">
+      <div class="card-body">
+        <h4 class="card-title text-dark mb-3">🛒 Your Cart Items:</h4>
+        {{#each cartDetails}}
+          <div class="cart-item d-flex justify-content-between mb-3 p-3 rounded bg-light">
+            <div><strong>📦 Product:</strong> {{this.name}}</div>
+            <div><strong>💰 Price:</strong> ₹{{this.price}} x {{this.quantity}} = ₹{{this.total}}</div>
+          </div>
+        {{/each}}
+        <div class="d-flex justify-content-between mt-3 p-2 bg-white rounded shadow-sm">
+          <strong>🧾 Total Price:</strong> ₹{{totalPrice}}
+          <strong>💳 Payment Method:</strong> {{paymentMethod}}
+        </div>
+      </div>
+    </div>
+
+  {{else}}
+    <!-- Single Product Confirmation -->
+    <div class="card mb-5 p-4 shadow-lg border-0 rounded-3 text-center">
+      <div class="card-body">
+        <!-- Product Image -->
+        <img src="{{product.image}}" alt="{{product.name}}" class="img-fluid rounded shadow-sm mb-4"
+          style="max-height: 200px;" />
+        <h4 class="card-title text-dark mb-3"><strong>📦 Product:</strong> {{product.name}}</h4>
+        <p class="card-text text-muted"><strong>🧾 Total Price:</strong> ₹{{totalPrice}}</p>
+        <p class="card-text text-muted"><strong>💳 Payment Method:</strong> {{paymentMethod}}</p>
+        <p class="card-text text-muted"><strong>🔢 Quantity:</strong> {{quantity}}</p>
+      </div>
+    </div>
+  {{/if}}
+
+  <!-- Order Confirmation Form -->
+  <div class="text-center">
+    <form action="/confirmed" method="POST" class="d-inline-block p-4 shadow-sm rounded-3 bg-light">
+      {{#if isMultiple}}
+        <input type="hidden" name="cartDetails" value='{{json cartDetails}}' />
+      {{else}}
+        <input type="hidden" name="productId" value="{{product.id}}" />
+        <input type="hidden" name="productName" value="{{product.name}}" />
+        <input type="hidden" name="totalPrice" value="{{totalPrice}}" />
+        <input type="hidden" name="quantity" value="{{quantity}}" />
+        <input type="hidden" name="paymentMethod" value="{{paymentMethod}}" />
+      {{/if}}
+
+      <button type="submit" class="btn btn-success btn-lg mt-3 px-5 py-3 rounded-pill shadow-sm confirm-btn">
+        ✅ Confirm Order
+      </button>
+    </form>
+  </div>
+
+  <!-- Navigation Links -->
+  <div class="text-center mt-5">
+    <a href="/" class="btn btn-outline-primary btn-lg mx-2 px-4 rounded-pill shadow-sm home-btn">
+      🏠 Back to Home
+    </a>
+    <a href="/orders" class="btn btn-outline-secondary btn-lg mx-2 px-4 rounded-pill shadow-sm orders-btn">
+      📜 View All Orders
+    </a>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .cart-item {
+    border-left: 5px solid #007bff;
+    padding-left: 10px;
+  }
+
+  .confirm-btn {
+    transition: 0.3s;
+  }
+
+  .confirm-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+
+  .home-btn, .orders-btn {
+    transition: 0.3s;
+  }
+
+  .home-btn:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+
+  .orders-btn:hover {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .cart-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .home-btn, .orders-btn {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+</style>

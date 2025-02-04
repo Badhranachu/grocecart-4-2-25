@@ -1,0 +1,186 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 text-center">
+      <h1 class="mb-4 text-dark">Profile of {{user.Name}}</h1>
+
+      <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white">
+          <h4 class="mb-0">User Details</h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Profile Picture Section -->
+          <div 
+            class="profile-picture-container mx-auto mb-4"
+            style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid black; overflow: hidden;">
+            <img 
+              src="{{user.imagePath}}" 
+              alt="Profile Picture" 
+              class="img-fluid rounded-circle"
+              style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+
+          <!-- Profile Information Table -->
+          <table class="table table-borderless text-left">
+            <tbody>
+              <tr>
+                <td><strong>Name:</strong></td>
+                <td>{{user.Name}}</td>
+              </tr>
+              <tr>
+                <td><strong>Email:</strong></td>
+                <td>{{user.Email}}</td>
+              </tr>
+              {{#if user.DateOfBirth}}
+                <tr>
+                  <td><strong>Date of Birth:</strong></td>
+                  <td>{{user.DateOfBirth}}</td>
+                </tr>
+              {{/if}}
+              {{#if user.Age}}
+                <tr>
+                  <td><strong>Age:</strong></td>
+                  <td>{{user.Age}}</td>
+                </tr>
+              {{/if}}
+              {{#if user.Place}}
+                <tr>
+                  <td><strong>Place:</strong></td>
+                  <td>{{user.Place}}</td>
+                </tr>
+              {{/if}}
+              {{#if user.Address}}
+                <tr>
+                  <td><strong>Address:</strong></td>
+                  <td>{{user.Address}}</td>
+                </tr>
+              {{/if}}
+            </tbody>
+          </table>
+
+          <!-- Buttons Section -->
+          <div class="d-flex justify-content-between mt-4">
+            <!-- Logout Button -->
+            <a href="/logout" class="btn btn-danger">Logout</a>
+
+            <!-- Edit User Button -->
+            {{!-- <a href="/edit-user"><button>edit</button></a> --}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* General Container Styling */
+.container {
+  max-width: 900px;
+  background: linear-gradient(135deg, #f3f3f3, #e8e8e8);
+  padding: 50px 30px;
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Heading */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #343a40;
+}
+
+/* Card Styling */
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  background: #343a40;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Profile Picture */
+.profile-picture-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid #343a40;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Table Styling */
+.table {
+  font-size: 1rem;
+}
+
+.table td {
+  padding: 10px;
+  font-weight: 500;
+}
+
+.table td:first-child {
+  color: #555;
+  font-weight: 600;
+  text-align: right;
+  width: 40%;
+}
+
+/* Buttons Styling */
+.btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-danger {
+  background: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+.btn-edit {
+  background: #007bff;
+  border: none;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #0056b3;
+}
+
+/* Layout Adjustments */
+.d-flex {
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  .table td {
+    text-align: left;
+  }
+}
+
+</style>

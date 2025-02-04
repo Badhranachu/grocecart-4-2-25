@@ -1,0 +1,196 @@
+<div class="purchase-container">
+  <h2 class="text-center mb-4">🛍️ Confirm Your Purchase</h2>
+
+  {{#if product}}
+  <div class="purchase-card">
+    
+    <!-- Left Section: User Details -->
+    <div class="user-details">
+      <h4>Your Details</h4>
+      <img src="{{user.imagePath}}" alt="Profile Image" class="profile-img" />
+      <p><strong>Name:</strong> {{user.Name}}</p>
+      <p><strong>Email:</strong> {{user.Email}}</p>
+      <p><strong>Phone:</strong> {{user.PhoneNumber}}</p>
+      <p><strong>Address:</strong> {{user.Address}}</p>
+      <p><strong>Place:</strong> {{user.Place}}</p>
+    </div>
+
+    <!-- Right Section: Product Details -->
+    <div class="product-details">
+      <h4>Product Information</h4>
+      <div class="product-display">
+        <img src="/product-images/{{product._id}}.jpg" alt="{{product.name}}" class="product-img" />
+        <div>
+          <h5>{{product.name}}</h5>
+          <p><strong>Category:</strong> {{product.category}}</p>
+          <p><strong>Price:</strong> ₹<span id="productPrice">{{product.price}}</span></p>
+
+          <!-- Quantity Selector -->
+          <div class="quantity-selector">
+            <button class="qty-btn" id="decrementBtn">-</button>
+            <input type="text" id="quantityInput" value="1" readonly />
+            <button class="qty-btn" id="incrementBtn">+</button>
+          </div>
+
+          <!-- Total Price -->
+          <p class="total-price">💰 Total: ₹<span id="totalPrice">{{product.price}}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Purchase Button -->
+  <div class="purchase-button">
+    <form action="/payment" method="POST">
+      <input type="hidden" name="productId" value="{{product._id}}" />
+      <input type="hidden" name="productName" value="{{product.name}}" />
+      <input type="hidden" name="productPrice" value="{{product.price}}" />
+      <input type="hidden" name="quantity" id="quantityInputForm" />
+      <input type="hidden" name="totalPrice" id="totalPriceInput" />
+      <button type="submit" class="confirm-btn">✅ Confirm & Pay</button>
+    </form>
+  </div>
+
+  {{else}}
+  <p class="text-center">⚠️ Product not found in your cart.</p>
+  {{/if}}
+</div>
+
+<!-- Styles -->
+<style>
+  .purchase-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background: linear-gradient(to right, #f8f9fa, #e3f2fd); 
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .purchase-card {
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .user-details, .product-details {
+    width: 48%;
+  }
+
+  .profile-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .product-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .product-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .qty-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .qty-btn:hover {
+    background: #0056b3;
+  }
+
+  #quantityInput {
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  .total-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d35400;
+  }
+
+  .purchase-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .confirm-btn {
+    background: #28a745;
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .confirm-btn:hover {
+    background: #218838;
+  }
+</style>
+
+<!-- JavaScript -->
+<script>
+  var productPrice = parseInt("{{product.price}}");
+
+  function updateHiddenInputs() {
+    var quantity = parseInt(document.getElementById("quantityInput").value);
+    var totalPrice = productPrice * quantity;
+    document.getElementById("quantityInputForm").value = quantity;
+    document.getElementById("totalPriceInput").value = totalPrice;
+  }
+
+  function updateTotalPrice() {
+    var quantity = parseInt(document.getElementById("quantityInput").value);
+    var totalPrice = productPrice * quantity;
+    document.getElementById("totalPrice").textContent = totalPrice;
+    updateHiddenInputs();
+  }
+
+  document.getElementById("incrementBtn").addEventListener("click", function () {
+    var quantityInput = document.getElementById("quantityInput");
+    quantityInput.value = parseInt(quantityInput.value) + 1;
+    updateTotalPrice();
+  });
+
+  document.getElementById("decrementBtn").addEventListener("click", function () {
+    var quantityInput = document.getElementById("quantityInput");
+    if (parseInt(quantityInput.value) > 1) {
+      quantityInput.value = parseInt(quantityInput.value) - 1;
+      updateTotalPrice();
+    }
+  });
+
+  updateTotalPrice();
+</script>
