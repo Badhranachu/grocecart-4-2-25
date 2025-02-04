@@ -1,90 +1,81 @@
-<section>
+<section class="signup-section">
   <div class="container">
-    <div class="row">
-      <div class="col mt-3">
-        <h2 class="text-center">SIGN UP</h2>
-        <form action="/signup" method="post" enctype="multipart/form-data">
-          <!-- Name -->
-          <label for="name">Name</label>
-          <input type="text" name="Name" id="name" class="form-control" placeholder="Name" required>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="signup-box">
+          <h2 class="text-center mb-4">📝 Sign Up</h2>
 
-          <!-- Email -->
-          <label for="email" class="mt-2">E-mail Address</label>
-          <input type="email" name="Email" id="email" class="form-control" placeholder="Enter E-mail" required>
+          <form action="/signup" method="post" enctype="multipart/form-data">
+            <!-- Name -->
+            <div class="form-group text-left">
+              <label for="name">👤 Full Name</label>
+              <input type="text" name="Name" id="name" class="form-control" placeholder="Enter your name" required>
+            </div>
 
-          <!-- Password -->
-          <label for="password" class="mt-2">Password</label>
-          <input type="password" name="Password" id="password" class="form-control" placeholder="Password" required>
+            <!-- Email -->
+            <div class="form-group text-left">
+              <label for="email">📧 E-mail Address</label>
+              <input type="email" name="Email" id="email" class="form-control" placeholder="Enter E-mail" required>
+            </div>
 
-          <!-- Confirm Password -->
-          <label for="confirm-password" class="mt-2">Confirm Password</label>
-          <input type="password" name="ConfirmPassword" id="confirm-password" class="form-control" placeholder="Confirm Password" required>
+            <!-- Password -->
+            <div class="form-group text-left">
+              <label for="password">🔒 Password</label>
+              <input type="password" name="Password" id="password" class="form-control" placeholder="Enter password" required>
+            </div>
 
-          <!-- Phone Number -->
-          <label for="phone" class="mt-2">Phone Number</label>
-          <input 
-            type="tel" 
-            name="PhoneNumber" 
-            id="phone" 
-            class="form-control" 
-            placeholder="Enter Phone Number" 
-            pattern="[0-9]{10}" 
-            title="Please enter a 10-digit phone number" 
-            required
-          >
+            <!-- Confirm Password -->
+            <div class="form-group text-left">
+              <label for="confirm-password">🔑 Confirm Password</label>
+              <input type="password" name="ConfirmPassword" id="confirm-password" class="form-control" placeholder="Confirm password" required>
+            </div>
 
-          <!-- Profile Picture Upload -->
-          <label for="profile-picture" class="mt-2">Upload Profile Picture</label>
-          <input 
-            type="file" 
-            name="ProfilePicture" 
-            id="profile-picture" 
-            class="form-control-file" 
-            accept="image/*" 
-            required 
-            onchange="previewProfilePicture(event)"
-          >
-          <!-- Preview Section -->
-          <div class="mt-3">
-            <img 
-              id="profile-preview" 
-              src="#" 
-              alt="Profile Picture Preview" 
-              style="display: none; max-width: 150px; max-height: 150px; border-radius: 50%; border: 1px solid #ddd;"
-            >
-          </div>
+            <!-- Phone Number -->
+            <div class="form-group text-left">
+              <label for="phone">📞 Phone Number</label>
+              <input type="tel" name="PhoneNumber" id="phone" class="form-control" placeholder="Enter Phone Number" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" required>
+            </div>
 
-          <!-- Date of Birth (Optional) -->
-          <label for="dob" class="mt-2">Date of Birth</label>
-          <input type="date" name="DateOfBirth" id="dob" class="form-control">
+            <!-- Profile Picture Upload -->
+            <div class="form-group text-left">
+              <label for="profile-picture">🖼 Upload Profile Picture</label>
+              <input type="file" name="ProfilePicture" id="profile-picture" class="form-control-file" accept="image/*" required onchange="previewProfilePicture(event)">
+              <div class="preview-container mt-3">
+                <img id="profile-preview" src="#" alt="Profile Picture Preview">
+              </div>
+            </div>
 
-          <!-- Age (Optional) -->
-          <label for="age" class="mt-2">Age</label>
-          <input type="number" name="Age" id="age" class="form-control" placeholder="Age" min="1">
+            <!-- DOB, Age, Place -->
+            <div class="form-group text-left">
+              <label for="dob">🎂 Date of Birth</label>
+              <input type="date" name="DateOfBirth" id="dob" class="form-control">
+            </div>
 
-          <!-- Place (Optional) -->
-          <label for="place" class="mt-2">Place</label>
-          <input type="text" name="Place" id="place" class="form-control" placeholder="Place">
+            <div class="form-group text-left">
+              <label for="age">📆 Age</label>
+              <input type="number" name="Age" id="age" class="form-control" placeholder="Enter age" min="1">
+            </div>
 
-          <!-- Address -->
-          <label for="address" class="mt-2">Address</label>
-          <textarea 
-            name="Address" 
-            id="address" 
-            class="form-control" 
-            placeholder="Enter your full address" 
-            rows="3" 
-            required
-          ></textarea>
+            <div class="form-group text-left">
+              <label for="place">📍 Place</label>
+              <input type="text" name="Place" id="place" class="form-control" placeholder="Enter your place">
+            </div>
 
-          <!-- Already have an account -->
-          <div class="col mt-2">
-            <a href="/login">Already have an account?</a><br>
-          </div>
+            <!-- Address -->
+            <div class="form-group text-left">
+              <label for="address">🏠 Address</label>
+              <textarea name="Address" id="address" class="form-control" placeholder="Enter your full address" rows="3" required></textarea>
+            </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-success mt-3 pl-10">Submit</button>
-        </form>
+            <!-- Already have an account -->
+            <div class="text-center mt-2">
+              <a href="/login" class="login-link">Already have an account?</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-custom btn-block mt-3">🚀 Sign Up</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -109,3 +100,85 @@
     }
   }
 </script>
+
+<style>
+  /* Background gradient */
+  body {
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* Centering signup form */
+  .signup-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  /* Signup Box */
+  .signup-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 500px; /* Set a max-width */
+  }
+
+  /* Form Controls */
+  .form-control {
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  /* Custom Submit Button */
+  .btn-custom {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    transition: 0.3s;
+    width: 100%;
+  }
+
+  .btn-custom:hover {
+    background-color: #ff3d00;
+  }
+
+  /* Profile Picture Preview */
+  .preview-container {
+    text-align: center;
+  }
+
+  .preview-container img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: none;
+  }
+
+  /* Login Link */
+  .login-link {
+    color: #ff6f61;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .signup-box {
+      padding: 20px;
+    }
+  }
+</style>

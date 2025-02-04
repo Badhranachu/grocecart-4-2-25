@@ -1,22 +1,89 @@
-<section>
+<section class="login-section">
   <div class="container">
-    <div class="row">
-      <div class="col mt-3">
-        <h2 class="text-center">LOGIN</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-5 login-box">
+        <h2 class="text-center mb-4">🔑 Login</h2>
+        
         <form action="/login" method="post" enctype="multipart/form-data">
           {{#if loginErr}}
-          <p class="text-danger">Invalid username or password</p>
+            <p class="text-danger text-center">❌ Invalid username or password</p>
           {{/if}}
-          <label for="">E-mail Address</label>
-          <input type="email" name="Email" class="form-control" placeholder="Enter your email" required>
-          <label for="">Password</label>
-          <input type="password" name="Password" class="form-control" placeholder="Enter your password" required>
-          <div class="col mt-2">
-            <a href="/signup">Create an Account</a><br>
+
+          <div class="form-group">
+            <label for="email">📧 E-mail Address</label>
+            <input type="email" name="Email" class="form-control" placeholder="Enter your email" required>
           </div>
-          <button type="submit" class="btn btn-primary mt-3 pl-10">Submit</button>
+
+          <div class="form-group">
+            <label for="password">🔒 Password</label>
+            <input type="password" name="Password" class="form-control" placeholder="Enter your password" required>
+          </div>
+
+          <div class="text-center mt-2">
+            <a href="/signup" class="signup-link">Create an Account</a>
+          </div>
+
+          <button type="submit" class="btn btn-custom btn-block mt-3">🚀 Submit</button>
         </form>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Page background */
+  body {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* Centering the login box */
+  .login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Login Box Styling */
+  .login-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  /* Input Fields */
+  .form-control {
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  /* Custom Submit Button */
+  .btn-custom {
+    background-color: #ff7e5f;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    transition: 0.3s;
+  }
+
+  .btn-custom:hover {
+    background-color: #feb47b;
+  }
+
+  /* Signup Link */
+  .signup-link {
+    color: #2575fc;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .signup-link:hover {
+    text-decoration: underline;
+  }
+</style>
