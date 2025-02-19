@@ -1,0 +1,212 @@
+<div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-dark-green text-white">
+        <h5 class="modal-title" id="wishlistModalLabel">Wishlist Update</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Product has been added to your wishlist!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark-green" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold text-success">All Products</h1>
+  </div>
+  <div class="row g-4 justify-content-center">
+    {{#each products}}
+    <div class="col-md-4 col-lg-3">
+      <a href="/each-product/{{this._id}}" class="text-decoration-none">
+        <div class="card product-card shadow-sm bg-dark text-white">
+          <div class="position-relative">
+            <img class="card-img-top" src="/product-images/{{this._id}}.jpg" alt="Product Image" onerror="this.onerror=null;this.src='/product-images/placeholder.jpg';">
+            <a href="javascript:void(0);" onclick="addToWishlist('{{this._id}}', '{{this.name}}')" class="wishlist-icon">
+              <i class="fa-regular fa-heart fa-xl text-success"></i>
+            </a>
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title text-white">{{this.name}}</h5>
+            <h6 class="text-success fw-bold" style="font-size: 25px;">₹ {{this.price}}</h6>
+            <p class="text-muted small">{{this.category}}</p>
+            {{#if this.quantity}}
+            <form class="add-to-cart-form" method="POST" onsubmit="submitAddToCart(event, this)">
+              <input type="hidden" name="productId" value="{{this._id}}">
+              <input type="hidden" name="productName" value="{{this.name}}">
+              <button type="submit" class="btn btn-dark-green w-100">ADD TO CART</button>
+            </form>
+            {{else}}
+            <p class="text-danger fw-bold">Out of Stock</p>
+            {{/if}}
+          </div>
+        </div>
+      </a>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<style>
+/* Dark Green Theme */
+body {
+    background-color: #1b1f23;
+    color: #ffffff;
+}
+
+/* Product Cards */
+.product-card {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #222;
+    border: 1px solid #155724;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(21, 87, 36, 0.5);
+}
+
+/* Wishlist Icon */
+.wishlist-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: #28a745;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.wishlist-icon:hover {
+    color: #1e7e34;
+}
+
+/* Buttons */
+.btn-dark-green {
+    background-color: #155724 !important;
+    border-color: #0f3d1f !important;
+    color: white !important;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-dark-green:hover {
+    background-color: #0f3d1f !important;
+    border-color: #0d3119 !important;
+}
+
+/* Modal */
+.bg-dark-green {
+    background-color: #155724;
+}
+
+/* SweetAlert2 Custom Styles */
+.swal2-popup {
+    background-color: #222 !important;
+    color: white !important;
+}
+
+.swal2-icon-success {
+    color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+.swal2-icon-warning {
+    color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+.swal2-icon-error {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+</style>
+
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+// Function to display SweetAlert2 notifications
+function showAlert(iconType, alertMessage, alertType) {
+    let customClass = alertType === "cart" ? "cart-alert" : "wishlist-alert";
+
+    Swal.fire({
+        toast: true,
+        position: "top",
+        icon: iconType,
+        title: alertMessage,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        customClass: {
+            popup: customClass
+        }
+    });
+}
+
+// Add to Cart Function
+function submitAddToCart(event, form) {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    fetch("/addtocart", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        let iconType = "success";
+        let alertMessage = "Added to cart successfully!";
+
+        if (data.error) {
+            iconType = "error";
+            alertMessage = data.error;
+        } else if (data.showAlert) { // If already in cart
+            iconType = "info";
+            alertMessage = data.message;
+        } else if (data.successMessage) {
+            alertMessage = data.successMessage;
+        }
+
+        showAlert(iconType, alertMessage, "cart");
+    })
+    .catch(error => {
+        console.error("Error adding to cart:", error);
+        showAlert("error", "An error occurred. Please try again.", "cart");
+    });
+}
+
+// Add to Wishlist Function
+function addToWishlist(productId, productName) {
+    fetch('/add-to-wishlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, productName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        let iconType = "success";
+        let alertMessage = `Added "${productName}" to wishlist`;
+
+        if (data.message.includes("already in wishlist")) {
+            iconType = "info";  
+            alertMessage = `"${productName}" is already in your wishlist`;
+        } else if (data.message.includes("removed")) {
+            iconType = "warning";  
+            alertMessage = `Removed "${productName}" from wishlist`;
+        }
+
+        showAlert(iconType, alertMessage, "wishlist");
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        showAlert("error", "An error occurred. Please try again.", "wishlist");
+    });
+}
+</script>

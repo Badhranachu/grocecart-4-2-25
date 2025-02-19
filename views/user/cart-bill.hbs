@@ -1,0 +1,101 @@
+<div class="container mt-5">
+    <h1 class="text-center text-success mb-4">Order Confirmation</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-dark-green">
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Original Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each cartItems}}
+                <tr>
+                    <td>{{this.productId}}</td>
+                    <td>{{this.productName}}</td>
+                    <td>₹{{this.originalPrice}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td class="fw-bold text-success">₹{{this.totalPrice}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h3 class="fw-bold text-success">Grand Total: ₹{{grandTotal}}</h3>
+    </div>
+
+    <div class="text-center mt-4">
+        <form id="confirm-order-form" action="/confirmed-cart" method="POST">
+            <input type="hidden" name="cartData" id="cart-data">
+            <input type="hidden" name="grandTotal" id="grand-total-input" value="{{grandTotal}}">
+
+            <button type="submit" class="btn btn-dark-green">Confirm Order</button>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Dark Green Theme Styling */
+.container {
+    max-width: 900px;
+    margin-top: 50px;
+}
+
+/* Table Styling */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-dark-green {
+    background-color: #155724 !important;
+    color: white !important;
+}
+
+/* Button Styling */
+.btn-dark-green {
+    background-color: #155724 !important;
+    border-color: #0f3d1f !important;
+    color: white !important;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-dark-green:hover {
+    background-color: #0f3d1f !important;
+    border-color: #0d3119 !important;
+}
+
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartData = [];
+    let grandTotal = 0;
+
+    {{#each cartItems}}
+    cartData.push({
+        productId: "{{this.productId}}",
+        productName: "{{this.productName}}",
+        originalPrice: parseFloat("{{this.originalPrice}}"),
+        quantity: {{this.quantity}},
+        totalPrice: parseFloat("{{this.totalPrice}}")
+    });
+    grandTotal += parseFloat("{{this.totalPrice}}");
+    {{/each}}
+
+    document.getElementById("cart-data").value = JSON.stringify(cartData);
+    document.getElementById("grand-total-input").value = grandTotal.toFixed(2);
+
+    console.log("Cart Data:", cartData);
+    console.log("Grand Total:", grandTotal);
+});
+</script>

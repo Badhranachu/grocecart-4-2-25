@@ -1,0 +1,101 @@
+<div class="container mt-5">
+    <h1 class="text-center text-success mb-4">Order Status</h1>
+
+    {{#if message}}
+        <div class="alert alert-success text-center">{{message}}</div>
+    {{/if}}
+
+    {{#if errorMessage}}
+        <div class="alert alert-danger text-center">{{errorMessage}}</div>
+    {{else}}
+        {{#if cartItems.length}}
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                    <thead class="table-dark-green">
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Original Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each cartItems}}
+                            <tr>
+                                <td>{{this.productId}}</td>
+                                <td>{{this.productName}}</td>
+                                <td>₹{{this.originalPrice}}</td>
+                                <td>{{this.quantity}}</td>
+                                <td class="fw-bold text-success">₹{{this.totalPrice}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h3 class="fw-bold text-success">Grand Total: ₹{{grandTotal}}</h3>
+            </div>
+
+        {{else}}
+            <div class="alert alert-warning text-center mt-4">
+                <p>Your cart is empty. Please add items to your cart before confirming the order.</p>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-dark-green">Continue Shopping</a>
+        <a href="/orders" class="btn btn-secondary ml-3">View Orders</a>
+    </div>
+</div>
+
+<style>
+/* Dark Green Theme Styling */
+body {
+    background-color: #1b1f23;
+    color: #ffffff;
+}
+
+.container {
+    max-width: 900px;
+    margin-top: 50px;
+}
+
+/* Table Styling */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #222;
+    color: white;
+}
+
+.table-dark-green {
+    background-color: #155724 !important;
+    color: white !important;
+}
+
+/* Button Styling */
+.btn-dark-green {
+    background-color: #155724 !important;
+    border-color: #0f3d1f !important;
+    color: white !important;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-dark-green:hover {
+    background-color: #0f3d1f !important;
+    border-color: #0d3119 !important;
+}
+
+/* Alerts */
+.alert {
+    font-size: 1.2em;
+    margin-top: 20px;
+    background-color: #0f3d1f;
+    color: white;
+}
+</style>

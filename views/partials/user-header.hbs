@@ -1,0 +1,155 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand text-success fw-bold" href="#">GROCECART</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <!-- Right-aligned Navigation -->
+      <ul class="navbar-nav">
+        {{#if user}} 
+        <li class="nav-item">
+          <a class="nav-link text-success" href="/">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="/cart">Cart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="/orders">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="/wishlist">Wishlist</a>
+        </li>
+        {{/if}}
+      </ul>
+
+      <!-- Profile Section -->
+      <div class="btn-group ms-3">
+        <div
+          class="dropdown-toggle d-flex align-items-center justify-content-center no-arrow"
+          id="userDropdown"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{#if user}} 
+            <img src="{{user.imagePath}}" alt="Profile Picture" class="profile-picture">
+          {{else}}
+            <div class="default-avatar">👤</div>
+          {{/if}}
+        </div>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          {{#if user}}
+            <a class="dropdown-item" href="/profile">View Profile</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          {{else}}
+            <a class="dropdown-item" href="/login">Login</a>
+            <a class="dropdown-item" href="/signup">Signup</a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /* Navbar Styles */
+  .navbar {
+    padding: 0.7rem 1rem; 
+    background-color: #000 !important; /* Black background */
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .navbar-nav .nav-link {
+    color: #28a745 !important; /* Green text */
+    font-weight: 500;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #45d163 !important; /* Brighter green on hover */
+  }
+  .dropdown-menu.show{
+    margin-left: -89px;
+  }
+
+
+  /* Profile Dropdown */
+  .btn-group {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    background-color: #222; /* Dark dropdown */
+    color: white;
+  }
+
+  .dropdown-menu a {
+    color: white !important;
+  }
+
+  .dropdown-menu a:hover {
+    background-color: #28a745 !important; /* Green highlight */
+  }
+
+  /* Profile Picture and Default Avatar */
+  .profile-picture,
+  .default-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #28a745; /* Green border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-picture {
+    object-fit: cover;
+    background-color: white;
+  }
+
+  .default-avatar {
+    background-color: #28a745; /* Green background */
+    color: white;
+    font-size: 18px;
+  }
+
+  /* User Dropdown Toggle */
+  #userDropdown {
+    cursor: pointer;
+  }
+
+
+  /* Prevent Horizontal Scrolling */
+body, html {
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+/* Ensure Dropdown Stays Inside the Screen */
+.dropdown-menu {
+  max-width: 250px; /* Prevent overflow */
+  white-space: nowrap; /* Keep text in one line */
+}
+
+/* Prevent Dropdown from Affecting Page Width */
+.btn-group {
+  position: relative;
+  z-index: 1050; /* Ensures it stays above other elements */
+}
+
+</style>
+<!-- Bootstrap JS & Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

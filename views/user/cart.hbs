@@ -1,0 +1,198 @@
+<div class="container mt-5">
+    <h1 class="text-center text-success mb-4">Your Shopping Cart</h1>
+
+    {{#if message}}
+        <div class="alert alert-success text-center">{{message}}</div>
+    {{/if}}
+
+    {{#if cartItems.length}}
+        <div class="table-responsive">
+            <table class="table table-hover text-center align-middle cart-table">
+                <thead class="table-success">
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Original Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cartItems}}
+                        <tr data-product-id="{{this._id}}" data-original-price="{{this.price}}">
+                            <td><img src="{{this.image}}" alt="{{this.name}}" class="img-fluid cart-img"></td>
+                            <td class="product-name">{{this.name}}</td>
+                            <td>₹{{this.price}}</td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <button class="btn btn-sm btn-outline-success decrease-qty">-</button>
+                                    <input type="number" class="form-control quantity-input text-center mx-2" value="{{this.quantity}}" min="1">
+                                    <button class="btn btn-sm btn-outline-success increase-qty">+</button>
+                                </div>
+                            </td>
+                            <td class="total-price">₹{{this.total}}</td>
+                            <td>
+                                <form action="/removefromcart" method="POST">
+                                    <input type="hidden" name="productId" value="{{this._id}}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 cart-total-section">
+            <h3 class="fw-bold text-success">Grand Total: <span id="grand-total">₹{{totalPrice}}</span></h3>
+
+            <form id="checkout-form" action="/confirm-cart" method="POST">
+                <input type="hidden" name="cartData" id="cart-data">
+                <input type="hidden" name="grandTotal" id="grand-total-input">
+                <button type="submit" class="btn btn-success btn-lg">Proceed to Checkout</button>
+            </form>
+        </div>
+
+    {{else}}
+        <div class="alert alert-warning text-center mt-4">
+            <p>Your cart is empty. Start shopping now!</p>
+        </div>
+    {{/if}}
+</div>
+
+<!-- Styles -->
+<style>
+    .cart-table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .cart-img {
+        width: 50px;
+        height: auto;
+        border-radius: 5px;
+    }
+    .quantity-input {
+        width: 60px;
+    }
+    .btn-outline-success {
+        border: 2px solid #28a745;
+        color: #28a745;
+        transition: 0.3s;
+    }
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-outline-danger {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        transition: 0.3s;
+    }
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    .cart-total-section {
+        background: #eaf8ec;
+        padding: 15px;
+        border-radius: 10px;
+    }
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let grandTotal = 0;
+    const cartData = [];
+
+    const updateCart = async (productId, quantity, row) => {
+        if (quantity < 1) return;
+        const originalPrice = parseFloat(row.getAttribute("data-original-price"));
+        const totalPriceElement = row.querySelector(".total-price");
+        const productName = row.querySelector(".product-name").textContent;
+
+        const newTotal = originalPrice * quantity;
+        totalPriceElement.textContent = `₹${newTotal.toFixed(2)}`;
+
+        const productIndex = cartData.findIndex(item => item.productId === productId);
+        if (productIndex !== -1) {
+            cartData[productIndex].quantity = quantity;
+            cartData[productIndex].totalPrice = newTotal;
+        } else {
+            cartData.push({ productId, productName, originalPrice, quantity, totalPrice: newTotal });
+        }
+
+        updateGrandTotal();
+
+        await fetch("/updatecart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId, quantity }),
+        });
+    };
+
+    const updateGrandTotal = () => {
+        grandTotal = cartData.reduce((sum, item) => sum + item.totalPrice, 0);
+        document.getElementById("grand-total").textContent = `₹${grandTotal.toFixed(2)}`;
+        document.getElementById("grand-total-input").value = grandTotal.toFixed(2);
+    };
+
+    document.querySelectorAll("tbody tr").forEach(row => {
+        const productId = row.getAttribute("data-product-id");
+        const originalPrice = parseFloat(row.getAttribute("data-original-price"));
+        const productName = row.querySelector(".product-name").textContent;
+        const input = row.querySelector(".quantity-input");
+        const totalPriceElement = row.querySelector(".total-price");
+
+        const quantity = parseInt(input.value) || 1;
+        const totalPrice = originalPrice * quantity;
+
+        totalPriceElement.textContent = `₹${totalPrice.toFixed(2)}`;
+        cartData.push({ productId, productName, originalPrice, quantity, totalPrice });
+
+        grandTotal += totalPrice;
+    });
+
+    document.getElementById("grand-total").textContent = `₹${grandTotal.toFixed(2)}`;
+    document.getElementById("grand-total-input").value = grandTotal.toFixed(2);
+
+    document.querySelectorAll(".increase-qty").forEach(button => {
+        button.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const input = row.querySelector(".quantity-input");
+            const productId = row.getAttribute("data-product-id");
+            let quantity = parseInt(input.value) + 1;
+            input.value = quantity;
+            updateCart(productId, quantity, row);
+        });
+    });
+
+    document.querySelectorAll(".decrease-qty").forEach(button => {
+        button.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const input = row.querySelector(".quantity-input");
+            const productId = row.getAttribute("data-product-id");
+            let quantity = parseInt(input.value) - 1;
+            if (quantity >= 1) {
+                input.value = quantity;
+                updateCart(productId, quantity, row);
+            }
+        });
+    });
+
+    document.querySelectorAll(".quantity-input").forEach(input => {
+        input.addEventListener("change", function () {
+            const row = this.closest("tr");
+            const productId = row.getAttribute("data-product-id");
+            const quantity = parseInt(this.value);
+            if (quantity < 1) this.value = 1;
+            updateCart(productId, this.value, row);
+        });
+    });
+
+    document.getElementById("checkout-form").addEventListener("submit", function () {
+        document.getElementById("cart-data").value = JSON.stringify(cartData);
+    });
+});
+</script>

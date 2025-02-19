@@ -1,0 +1,101 @@
+<div class="container mt-5">
+  <h1 class="text-center text-success mb-5">Your Orders</h1>
+
+  {{#if orders.length}}
+  <div class="row">
+    {{#each orders}}
+    <a href="/each-product/{{productId}}" class="col-md-4 mb-4">
+      <div class="card shadow-lg rounded-lg border-light overflow-hidden">
+        <img src="{{productImage}}" alt="{{productName}}" class="card-img-top" style="height: 250px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-success">{{productName}}</h5>
+          <p class="card-text"><strong>Price:</strong> ₹{{totalPrice}}</p>
+          <p class="card-text"><strong>Quantity:</strong> {{quantity}}</p>
+          <p class="card-text"><strong>Payment Method:</strong> {{paymentMethod}}</p>
+          <p class="card-text"><strong>Status:</strong> {{orderStatus}}</p>
+          <p class="card-text"><strong>Order Date:</strong> {{orderDateFormatted}}</p>
+        </div>
+        <div class="card-footer text-muted text-center bg-light">
+          <small class="text-success">View Details</small>
+        </div>
+      </div>
+    </a>
+
+    <!-- Modal for full-size image -->
+    <div class="modal fade" id="imageModal{{@index}}" tabindex="-1" aria-labelledby="imageModalLabel{{@index}}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="{{productImage}}" alt="{{productName}}" class="img-fluid w-100">
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{else}}
+  <p class="text-center text-muted">No confirmed orders found.</p>
+  {{/if}}
+</div>
+
+<style>
+  /* Ensure the link inside the card has no text-decoration and remains black */
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  /* Prevent hover underline effect on the link within the card */
+  a:hover {
+    text-decoration: none;
+  }
+
+  /* Card hover effect */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #eaf8ec;
+    border: 1px solid #c3e6cb;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 30px rgba(40, 167, 69, 0.2);
+    color: black;
+  }
+
+  .card-title {
+    font-weight: 600;
+  }
+
+  .card-img-top {
+    border-bottom: 3px solid #28a745;
+  }
+
+  .card-footer {
+    background-color: #dff0d8;
+    font-weight: bold;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  /* Modal Styles */
+  .modal-content {
+    background-color: #eaf8ec;
+    border-radius: 10px;
+    border: 1px solid #28a745;
+  }
+
+  .modal-body img {
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  .text-success {
+    color: #28a745 !important;
+  }
+</style>
